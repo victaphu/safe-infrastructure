@@ -32,7 +32,7 @@ services:
     image: redis:alpine
 
   txs-web:
-    image: gnosispm/safe-transaction-service:${TXS_VERSION}
+    image: safe-transaction-service_web:latest
     env_file:
       - container_env_files/txs.env
     environment:
@@ -46,7 +46,7 @@ services:
     command: docker/web/run_web.sh
 
   txs-worker: &worker
-    image: gnosispm/safe-transaction-service:${TXS_VERSION}
+    image: safe-transaction-service_worker:latest
     env_file:
       - container_env_files/txs.env
     environment:
@@ -58,6 +58,8 @@ services:
 
   txs-scheduler:
     <<: *worker
+    image: safe-transaction-service_scheduler:latest
+
     command: docker/web/celery/scheduler/run.sh
 
   # Safe Config Service
@@ -83,7 +85,7 @@ services:
       - cgw-redis
 
   ui:
-    image: gnosispm/safe-react
+    image: safe-react_safe-react:latest
     env_file:
       - container_env_files/ui.env
     depends_on:
